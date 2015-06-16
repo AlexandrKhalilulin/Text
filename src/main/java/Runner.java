@@ -1,12 +1,10 @@
 import logic.Parser;
-import logic.TextLogic;
-import org.apache.log4j.spi.LoggerFactory;
 import org.slf4j.Logger;
 
-import javax.xml.soap.Text;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class Runner {
     public static void main(String[] args) throws IOException {
@@ -23,7 +21,7 @@ public class Runner {
         sb.trimToSize();
         Parser parser = new Parser();
         model.Text text = parser.parse(sb);
-        //TextLogic.doFirst(tex);
+        logger.info("Text is - {}", text.toString());
 
     }
 }

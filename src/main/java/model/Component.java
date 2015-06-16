@@ -1,9 +1,5 @@
 package model;
 
-import java.util.List;
+public interface Component<T> {
 
-public interface Component {
-    //add
-    //remove
-    //List<Paragraph> getChild();
 }
