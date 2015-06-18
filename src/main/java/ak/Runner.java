@@ -12,9 +12,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Runner {
-    public static void main(String[] args) throws IOException, NoSuchFieldException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, NoSuchFieldException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         Logger logger = org.slf4j.LoggerFactory.getLogger(Runner.class);
-        logger.info(System.getProperty("user.dir"));
+        // logger.info(System.getProperty("user.dir"));
         InputStream loader = ClassLoader.getSystemResourceAsStream("sample.txt");
         InputStreamReader is = new InputStreamReader(loader, "UTF-8");
         BufferedReader reader = new BufferedReader(is);
@@ -29,7 +29,7 @@ public class Runner {
         Parser parser = new Parser();
         parser.configure(property);
         Text text = parser.parseText(sb.toString());
-        Text text1 = parser.parse(sb.toString(), Text.class);
+        Class text1 = parser.parse(sb.toString(), Text.class);
         //ak.model.Text text = parser.parseText(sb.toString());
     }
 }

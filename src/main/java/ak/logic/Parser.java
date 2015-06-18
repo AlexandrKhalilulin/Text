@@ -5,6 +5,8 @@ import ak.util.PropertyManager;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -30,7 +32,7 @@ public class Parser {
         Text text = new Text();
         String[] split = inputText.split("\\n");
         for (String part : split) {
-            logger.info("Paragraph is - {}", part);
+            // logger.info("Paragraph is - {}", part);
             Paragraph paragraph = parseParagraph(part);
             text.add(paragraph);
         }
@@ -41,7 +43,7 @@ public class Parser {
         Paragraph paragraph = new Paragraph();
         String[] split = paragraphInput.split("(?<=[.?!] )");
         for (String part : split) {
-            logger.info("Sentense is - {}", part);
+            //logger.info("Sentense is - {}", part);
             Sentence sentence = parseSentence(part);
             paragraph.add(sentence);
         }
@@ -57,7 +59,7 @@ public class Parser {
         Matcher matcherWord = patternWord.matcher(textString);
         Matcher matcherPunctuation = patternPunctuation.matcher(textString);
         while (matcherWord.find()) {
-            logger.info("Word is - {}", matcherWord.group());
+            //logger.info("Word is - {}", matcherWord.group());
             Word word = parseWord(matcherWord.group());
             sentence.add(word);
         }
@@ -84,18 +86,34 @@ public class Parser {
         regexComponent = regex;
     }
 
-    public Text parse(String s, Class Clazz) throws ClassNotFoundException, NoSuchFieldException {
-        Class composite = Class.forName(String.valueOf(Clazz));
-        logger.info(String.valueOf(composite));
-        Field field = composite.getField("name");
-        logger.info(String.valueOf(field));
+    public Class parse(String s, Class Clazz) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, InstantiationException {
+        //Object obj = Clazz.newInstance();
+        //Class compositeClass = obj.getClass();
+        Class composite = Clazz.getDeclaringClass();
+
+        ParameterizedType type = (ParameterizedType) Clazz.getGenericSuperclass();
+        Class componentClass = (Class) type.getActualTypeArguments()[0];
+        Class component = componentClass.getDeclaringClass();
+
+        logger.info("classComposite is - {}", Clazz);
+        logger.info("classComponent is - {}", componentClass);
+        logger.info("Composite is - {}", composite);
+        logger.info("Component - {}", component);
+
+
         String[] split = s.split(" ");
-        //for (String part : split) {
-        //    logger.info("Composite is - {}", part);
-        //
-        //    composite.add(parse(part,));
-        //}
-        return null;
+        for (String part : split) {
+
+            //  logger.info("Composite is - {}", part);
+            component = parse(part, componentClass);
+            //  try {
+            //       Method method = compositeClass.getMethod("add", component);
+            //   } catch (NoSuchMethodException e) {
+            //       e.printStackTrace();
+            //  }
+            // aClass.add(parse(part, ));
+        }
+        return composite;
 
     }
 }
