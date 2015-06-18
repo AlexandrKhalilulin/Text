@@ -1,7 +1,5 @@
 package ak.model;
 
-import java.util.List;
-
 public class Sentence extends AbstractComposite<SentencePart> implements Composite<SentencePart> {
 
     public Sentence() {

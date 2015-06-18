@@ -1,14 +1,10 @@
 package ak.logic;
 
 import ak.model.*;
-import ak.util.PropertyManager;
 import org.slf4j.Logger;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,17 +12,42 @@ public class Parser {
     Logger logger = org.slf4j.LoggerFactory.getLogger(Parser.class);
     String regexComponent;
 
-    //   public AbstractComposite parseAbstractComposite (String text, Composite composite)
-    //  {
-    //    AbstractComposite compositeTT = (AbstractComposite) composite; //new AbstractComposite();
-    //      Pattern patternComponent = Pattern.compile(regexComponent);
-    //      Matcher matcherComponent = patternComponent.matcher(text);
-    //       while (matcherComponent.find()) {
+    public Class parse(String s, Class Clazz) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, InstantiationException {
 
-    //          compositeTT.add(new Component(parseAbstractComposite(matcherComponent.group()), );
-    //      }
-    //      return compositeTT;
-    //  }
+        //create an instance of a class which is split
+        Class composite = Clazz.getDeclaringClass();
+
+        //define a class comonent
+        ParameterizedType type = (ParameterizedType) Clazz.getGenericSuperclass();
+        Class componentClass = (Class) type.getActualTypeArguments()[0];
+
+        //create an instance of the component class
+        Class component = componentClass.getDeclaringClass();
+
+        logger.info("classComposite is - {}", Clazz);
+        logger.info("classComponent is - {}", componentClass);
+        logger.info("Composite is - {}", composite);
+        logger.info("Component - {}", component);
+
+        String[] split = s.split(" ");
+        for (String part : split) {
+
+            logger.info("Composite is - {}", part);
+
+            //split component
+            component = parse(part, componentClass);
+            try {
+                //called method of the composite knowing his name and the parameter
+                Method method = composite.getMethod("add", component);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return composite;
+
+    }
 
     public Text parseText(String inputText) {
         Text text = new Text();
@@ -86,41 +107,5 @@ public class Parser {
         regexComponent = regex;
     }
 
-    public Class parse(String s, Class Clazz) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, InstantiationException {
-
-        //create an instance of a class which is split
-        Class composite = Clazz.getDeclaringClass();
-
-        //define a class comonent
-        ParameterizedType type = (ParameterizedType) Clazz.getGenericSuperclass();
-        Class componentClass = (Class) type.getActualTypeArguments()[0];
-
-        //create an instance of the component class
-        Class component = componentClass.getDeclaringClass();
-
-        logger.info("classComposite is - {}", Clazz);
-        logger.info("classComponent is - {}", componentClass);
-        logger.info("Composite is - {}", composite);
-        logger.info("Component - {}", component);
-
-        String[] split = s.split(" ");
-        for (String part : split) {
-
-            logger.info("Composite is - {}", part);
-
-            //split component
-            component = parse(part, componentClass);
-            try {
-                //called method of the composite knowing his name and the parameter
-                Method method = composite.getMethod("add", component);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        return composite;
-
-    }
 }
 

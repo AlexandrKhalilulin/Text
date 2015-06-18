@@ -1,7 +1,6 @@
 package ak;
 
 import ak.logic.Parser;
-import ak.model.AbstractComposite;
 import ak.model.Text;
 import ak.util.PropertyManager;
 import org.slf4j.Logger;
