@@ -1,4 +1,8 @@
-import logic.Parser;
+package ak;
+
+import ak.logic.Parser;
+import ak.model.Text;
+import ak.util.PropertyManager;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;
@@ -19,9 +23,12 @@ public class Runner {
         }
         reader.close();
         sb.trimToSize();
+        PropertyManager propertyManager = new PropertyManager("parser.properties");
+        String property = propertyManager.getProperty("paragraph.regex");
         Parser parser = new Parser();
-        model.Text text = parser.parse(sb);
-        logger.info("Text is - {}", text.toString());
-
+        parser.configure(property);
+        Text text = parser.parseText(sb.toString());
+        Text text1 = parser.parseUni(sb.toString(), Text.class);
+        //ak.model.Text text = parser.parseText(sb.toString());
     }
 }
