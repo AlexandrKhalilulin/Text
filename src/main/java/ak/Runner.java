@@ -1,6 +1,7 @@
 package ak;
 
 import ak.logic.Parser;
+import ak.model.AbstractComposite;
 import ak.model.Text;
 import ak.util.PropertyManager;
 import org.slf4j.Logger;
@@ -11,7 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Runner {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, NoSuchFieldException, ClassNotFoundException {
         Logger logger = org.slf4j.LoggerFactory.getLogger(Runner.class);
         logger.info(System.getProperty("user.dir"));
         InputStream loader = ClassLoader.getSystemResourceAsStream("sample.txt");
@@ -28,7 +29,7 @@ public class Runner {
         Parser parser = new Parser();
         parser.configure(property);
         Text text = parser.parseText(sb.toString());
-        Text text1 = parser.parseUni(sb.toString(), Text.class);
+        Text text1 = parser.parse(sb.toString(), Text.class);
         //ak.model.Text text = parser.parseText(sb.toString());
     }
 }

@@ -4,6 +4,7 @@ import ak.model.*;
 import ak.util.PropertyManager;
 import org.slf4j.Logger;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -83,8 +84,19 @@ public class Parser {
         regexComponent = regex;
     }
 
-    public Text parseUni(String s, Class<AbstractComposite> Class) {
-        Class compos = new Class<? ??>();
+    public Text parse(String s, Class Clazz) throws ClassNotFoundException, NoSuchFieldException {
+        Class composite = Class.forName(String.valueOf(Clazz));
+        logger.info(String.valueOf(composite));
+        Field field = composite.getField("name");
+        logger.info(String.valueOf(field));
+        String[] split = s.split(" ");
+        //for (String part : split) {
+        //    logger.info("Composite is - {}", part);
+        //
+        //    composite.add(parse(part,));
+        //}
         return null;
+
     }
 }
+
