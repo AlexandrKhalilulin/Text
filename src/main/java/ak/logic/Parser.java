@@ -84,7 +84,7 @@ public class Parser {
     }
 
     public Text parseUni(String s, Class<AbstractComposite> Class) {
-        Class compos = new Class<>();
+        Class compos = new Class<? ??>();
         return null;
     }
 }
