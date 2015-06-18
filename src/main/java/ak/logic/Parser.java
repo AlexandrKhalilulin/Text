@@ -87,12 +87,15 @@ public class Parser {
     }
 
     public Class parse(String s, Class Clazz) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, InstantiationException {
-        //Object obj = Clazz.newInstance();
-        //Class compositeClass = obj.getClass();
+
+        //create an instance of a class which is split
         Class composite = Clazz.getDeclaringClass();
 
+        //define a class comonent
         ParameterizedType type = (ParameterizedType) Clazz.getGenericSuperclass();
         Class componentClass = (Class) type.getActualTypeArguments()[0];
+
+        //create an instance of the component class
         Class component = componentClass.getDeclaringClass();
 
         logger.info("classComposite is - {}", Clazz);
@@ -100,19 +103,22 @@ public class Parser {
         logger.info("Composite is - {}", composite);
         logger.info("Component - {}", component);
 
-
         String[] split = s.split(" ");
         for (String part : split) {
 
-            //  logger.info("Composite is - {}", part);
+            logger.info("Composite is - {}", part);
+
+            //split component
             component = parse(part, componentClass);
-            //  try {
-            //       Method method = compositeClass.getMethod("add", component);
-            //   } catch (NoSuchMethodException e) {
-            //       e.printStackTrace();
-            //  }
-            // aClass.add(parse(part, ));
+            try {
+                //called method of the composite knowing his name and the parameter
+                Method method = composite.getMethod("add", component);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
         }
+
         return composite;
 
     }
