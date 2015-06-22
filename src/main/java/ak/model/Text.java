@@ -1,6 +1,9 @@
 package ak.model;
 
-public class Text extends AbstractComposite<Paragraph> implements Composite<Paragraph> {
+public class Text extends AbstractComposite<Paragraph> {
+
+    public Text() {
+    }
 
     @Override
     public String toSourceString() {

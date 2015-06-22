@@ -1,95 +1,71 @@
 package ak.logic;
 
 import ak.model.*;
+import ak.util.PropertyManager;
 import org.slf4j.Logger;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser {
     Logger logger = org.slf4j.LoggerFactory.getLogger(Parser.class);
-    String regexComponent;
+    private String paragraphBorderRegex;
+    private String sentenseBorderRegex;
+    private String wordRegex;
+    private String punctuationRegex;
+    private String sentencePartRegex;
 
-    public Class parse(String s, Class Clazz) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, InstantiationException {
-
-        //create an instance of a class which is split
-        Class composite = Clazz.getDeclaringClass();
-
-        //define a class comonent
-        ParameterizedType type = (ParameterizedType) Clazz.getGenericSuperclass();
-        Class componentClass = (Class) type.getActualTypeArguments()[0];
-
-        //create an instance of the component class
-        Class component = componentClass.getDeclaringClass();
-
-        logger.info("classComposite is - {}", Clazz);
-        logger.info("classComponent is - {}", componentClass);
-        logger.info("Composite is - {}", composite);
-        logger.info("Component - {}", component);
-
-        String[] split = s.split(" ");
-        for (String part : split) {
-
-            logger.info("Composite is - {}", part);
-
-            //split component
-            component = parse(part, componentClass);
-            try {
-                //called method of the composite knowing his name and the parameter
-                Method method = composite.getMethod("add", component);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        return composite;
-
+    public Parser() {
     }
 
-    public Text parseText(String inputText) {
+    public void configure(PropertyManager pm) {
+        paragraphBorderRegex = pm.getProperty("paragraphBorder.regex");
+        sentenseBorderRegex = pm.getProperty("sentenceBorder.regex");
+        wordRegex = pm.getProperty("word.regex");
+        punctuationRegex = pm.getProperty("punctuation.regex");
+        sentencePartRegex = pm.getProperty("partSentence.regex");
+    }
+
+    public Text parseText(String string) {
         Text text = new Text();
-        String[] split = inputText.split("\\n");
+        String[] split = string.split(paragraphBorderRegex);
         for (String part : split) {
-            // logger.info("Paragraph is - {}", part);
+            logger.info("Paragraph is - {}", part);
             Paragraph paragraph = parseParagraph(part);
             text.add(paragraph);
         }
         return text;
     }
 
-    public Paragraph parseParagraph(String paragraphInput) {
+    public Paragraph parseParagraph(String string) {
         Paragraph paragraph = new Paragraph();
-        String[] split = paragraphInput.split("(?<=[.?!] )");
+        String[] split = string.split(sentenseBorderRegex);
         for (String part : split) {
-            //logger.info("Sentense is - {}", part);
+            logger.info("Sentense is - {}", part);
             Sentence sentence = parseSentence(part);
             paragraph.add(sentence);
         }
         return paragraph;
     }
 
-    private Sentence parseSentence(String textString) {
+    private Sentence parseSentence(String string) {
         Sentence sentence = new Sentence();
-        String regexWord = ("\\w+");
-        String regexPunctuationMark = ("\\,|\\.|\\!|\\?|\\(|\\)|\\-|\\/|\\++|\\+|\\;|\\:|\\--");
-        Pattern patternWord = Pattern.compile(regexWord);
-        Pattern patternPunctuation = Pattern.compile(regexPunctuationMark);
-        Matcher matcherWord = patternWord.matcher(textString);
-        Matcher matcherPunctuation = patternPunctuation.matcher(textString);
-        while (matcherWord.find()) {
-            //logger.info("Word is - {}", matcherWord.group());
-            Word word = parseWord(matcherWord.group());
-            sentence.add(word);
+        Pattern patternSentencePart = Pattern.compile(sentencePartRegex);
+        Matcher matcherSentencePart = patternSentencePart.matcher(string);
+        while (matcherSentencePart.find()) {
+            if (matcherSentencePart.group().matches(wordRegex)) {
+                logger.info("Word is - {}", matcherSentencePart.group());
+                Word word = parseWord(matcherSentencePart.group());
+                sentence.add(word);
+            }
+            if (matcherSentencePart.group().matches(punctuationRegex)) {
+                logger.info("Punctuation is - {}", matcherSentencePart.group());
+                char ch = matcherSentencePart.group().charAt(0);
+                Symbol symbol = new Symbol(ch);
+                sentence.add(symbol);
+            }
         }
-        //while (matcherPunctuation.find()) {
-        //   logger.info("Punctuation is - {}", matcherPunctuation.group());
-        //   char ch = (char) matcherPunctuation.group();
-        //   Symbol symbol = matcherPunctuation.group();
-        //   sentence.add(symbol);
-        //}
         return sentence;
     }
 
@@ -98,14 +74,24 @@ public class Parser {
         for (int i = 0; i < string.length(); i++) {
             Symbol symbol = new Symbol(string.charAt(i));
             word.add(symbol);
-
         }
         return word;
     }
 
-    public void configure(String regex) {
-        regexComponent = regex;
-    }
+    public List<Sentence> parseSample(String s) {
+        PropertyManager pr = new PropertyManager("parser.properties");
+        String s1 = pr.getProperty("partSentence.regex");
+        Pattern patternSample = Pattern.compile(s1);
+        Matcher matcherSample = patternSample.matcher(s);
+        while (matcherSample.find()) {
+            logger.info("Part is - {}", matcherSample.group());
 
+        }
+        String[] split = s.split(s1);
+        for (int i = 0; i < split.length; i++) {
+            logger.info(split[i]);
+        }
+        return null;
+    }
 }
 

@@ -1,6 +1,6 @@
 package ak.model;
 
-public class Word extends AbstractComposite<Symbol> implements Composite<Symbol>, SentencePart {
+public class Word extends AbstractComposite<Symbol> implements SentencePart {
 
     public Word() {
     }

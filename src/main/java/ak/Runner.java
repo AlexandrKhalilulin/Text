@@ -13,7 +13,6 @@ import java.io.InputStreamReader;
 public class Runner {
     public static void main(String[] args) throws IOException, NoSuchFieldException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         Logger logger = org.slf4j.LoggerFactory.getLogger(Runner.class);
-        // logger.info(System.getProperty("user.dir"));
         InputStream loader = ClassLoader.getSystemResourceAsStream("sample.txt");
         InputStreamReader is = new InputStreamReader(loader, "UTF-8");
         BufferedReader reader = new BufferedReader(is);
@@ -24,11 +23,14 @@ public class Runner {
         reader.close();
         sb.trimToSize();
         PropertyManager propertyManager = new PropertyManager("parser.properties");
-        String property = propertyManager.getProperty("paragraph.regex");
         Parser parser = new Parser();
-        parser.configure(property);
+        parser.configure(propertyManager);
         Text text = parser.parseText(sb.toString());
-        Class text1 = parser.parse(sb.toString(), Text.class);
-        //ak.model.Text text = parser.parseText(sb.toString());
+
+//        Class<Text> textClass = Text.class;
+//        UniversalParser universalParser = new UniversalParser();
+//        universalParser.autoconfigure(propertyManager);
+//        universalParser.parseAllWhatYouWant(sb.toString(), textClass);
+
     }
 }

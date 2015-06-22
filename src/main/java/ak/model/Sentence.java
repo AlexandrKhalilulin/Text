@@ -1,6 +1,6 @@
 package ak.model;
 
-public class Sentence extends AbstractComposite<SentencePart> implements Composite<SentencePart> {
+public class Sentence extends AbstractComposite<SentencePart> {
 
     public Sentence() {
     }

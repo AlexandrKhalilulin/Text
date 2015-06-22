@@ -8,6 +8,6 @@ public class Symbol implements Component, SentencePart {
     }
 
     public String toSourceString() {
-        return null;
+        return String.valueOf(symbol);
     }
 }
