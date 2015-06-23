@@ -1,6 +1,7 @@
 package ak;
 
 import ak.logic.Parser;
+import ak.logic.TextLogic;
 import ak.model.Text;
 import ak.util.PropertyManager;
 import org.slf4j.Logger;
@@ -14,8 +15,7 @@ public class Runner {
     public static void main(String[] args) throws IOException, NoSuchFieldException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         Logger logger = org.slf4j.LoggerFactory.getLogger(Runner.class);
         InputStream loader = ClassLoader.getSystemResourceAsStream("sample.txt");
-        InputStreamReader is = new InputStreamReader(loader, "UTF-8");
-        BufferedReader reader = new BufferedReader(is);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(loader, "UTF-8"));
         StringBuilder sb = new StringBuilder();
         while (reader.readLine() != null) {
             sb.append(reader.readLine()).append("\n");
@@ -26,6 +26,11 @@ public class Runner {
         Parser parser = new Parser();
         parser.configure(propertyManager);
         Text text = parser.parseText(sb.toString());
+        logger.info(text.toSourceString());
+
+        TextLogic.findUniqueWord(text);
+        TextLogic.bringAllSentencesAscendingOrderWords(text);
+        TextLogic.swapWords(text);
 
 //        Class<Text> textClass = Text.class;
 //        UniversalParser universalParser = new UniversalParser();

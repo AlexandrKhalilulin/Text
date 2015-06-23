@@ -14,4 +14,14 @@ public class Word extends AbstractComposite<Symbol> implements SentencePart {
     public void add(Symbol symbol) {
         super.add(symbol);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

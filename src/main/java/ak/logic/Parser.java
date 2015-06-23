@@ -31,7 +31,6 @@ public class Parser {
         Text text = new Text();
         String[] split = string.split(paragraphBorderRegex);
         for (String part : split) {
-            logger.info("Paragraph is - {}", part);
             Paragraph paragraph = parseParagraph(part);
             text.add(paragraph);
         }
@@ -42,7 +41,6 @@ public class Parser {
         Paragraph paragraph = new Paragraph();
         String[] split = string.split(sentenseBorderRegex);
         for (String part : split) {
-            logger.info("Sentense is - {}", part);
             Sentence sentence = parseSentence(part);
             paragraph.add(sentence);
         }
@@ -55,12 +53,10 @@ public class Parser {
         Matcher matcherSentencePart = patternSentencePart.matcher(string);
         while (matcherSentencePart.find()) {
             if (matcherSentencePart.group().matches(wordRegex)) {
-                logger.info("Word is - {}", matcherSentencePart.group());
                 Word word = parseWord(matcherSentencePart.group());
                 sentence.add(word);
             }
             if (matcherSentencePart.group().matches(punctuationRegex)) {
-                logger.info("Punctuation is - {}", matcherSentencePart.group());
                 char ch = matcherSentencePart.group().charAt(0);
                 Symbol symbol = new Symbol(ch);
                 sentence.add(symbol);

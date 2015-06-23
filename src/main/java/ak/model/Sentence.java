@@ -1,5 +1,8 @@
 package ak.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Sentence extends AbstractComposite<SentencePart> {
 
     public Sentence() {
@@ -13,5 +16,13 @@ public class Sentence extends AbstractComposite<SentencePart> {
     @Override
     public void add(SentencePart sentencePart) {
         super.add(sentencePart);
+    }
+
+    public List<Word> getWords() {
+        List<Word> words = new ArrayList<Word>();
+        for (SentencePart list : getElements()) {
+            if (list.getClass() == Word.class) words.add((Word) list);
+        }
+        return words;
     }
 }
