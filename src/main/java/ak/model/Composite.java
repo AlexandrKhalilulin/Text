@@ -10,6 +10,7 @@ public interface Composite<E extends Component> extends Component {
     List getWords();
 
     List getSentences();
+
     //E remove(int index);
     // E remove(E e);
     boolean contains(E e);

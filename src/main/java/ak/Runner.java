@@ -37,7 +37,5 @@ public class Runner {
         nonUniversalParser.autoconfigure(propertyManager);
         nonUniversalParser.parse(sb.toString(), Text.class);
 
-
-
     }
 }
