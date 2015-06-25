@@ -3,10 +3,9 @@ package ak.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Paragraph extends AbstractComposite<Sentence> {
+public class Paragraph extends AbstractComposite<Sentence> implements Component {
 
     public Paragraph() {
-        super();
     }
 
     @Override

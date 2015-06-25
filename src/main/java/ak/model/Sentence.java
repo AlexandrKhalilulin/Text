@@ -3,7 +3,7 @@ package ak.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sentence extends AbstractComposite<SentencePart> {
+public class Sentence extends AbstractComposite<SentencePart> implements Component {
 
     public Sentence() {
     }

@@ -4,19 +4,18 @@ import ak.model.*;
 import ak.util.PropertyManager;
 import org.slf4j.Logger;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Parser {
-    Logger logger = org.slf4j.LoggerFactory.getLogger(Parser.class);
+public class EasyParser {
+    Logger logger = org.slf4j.LoggerFactory.getLogger(EasyParser.class);
     private String paragraphBorderRegex;
     private String sentenseBorderRegex;
     private String wordRegex;
     private String punctuationRegex;
     private String sentencePartRegex;
 
-    public Parser() {
+    public EasyParser() {
     }
 
     public void configure(PropertyManager pm) {
@@ -24,7 +23,7 @@ public class Parser {
         sentenseBorderRegex = pm.getProperty("sentenceBorder.regex");
         wordRegex = pm.getProperty("word.regex");
         punctuationRegex = pm.getProperty("punctuation.regex");
-        sentencePartRegex = pm.getProperty("partSentence.regex");
+        sentencePartRegex = pm.getProperty("sentencePart.regex");
     }
 
     public Text parseText(String string) {
@@ -72,22 +71,6 @@ public class Parser {
             word.add(symbol);
         }
         return word;
-    }
-
-    public List<Sentence> parseSample(String s) {
-        PropertyManager pr = new PropertyManager("parser.properties");
-        String s1 = pr.getProperty("partSentence.regex");
-        Pattern patternSample = Pattern.compile(s1);
-        Matcher matcherSample = patternSample.matcher(s);
-        while (matcherSample.find()) {
-            logger.info("Part is - {}", matcherSample.group());
-
-        }
-        String[] split = s.split(s1);
-        for (int i = 0; i < split.length; i++) {
-            logger.info(split[i]);
-        }
-        return null;
     }
 }
 

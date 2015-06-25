@@ -1,7 +1,7 @@
 package ak;
 
-import ak.logic.Parser;
-import ak.logic.TextLogic;
+import ak.logic.EasyParser;
+import ak.logic.NonUniversalParser;
 import ak.model.Text;
 import ak.util.PropertyManager;
 import org.slf4j.Logger;
@@ -22,20 +22,22 @@ public class Runner {
         }
         reader.close();
         sb.trimToSize();
+
         PropertyManager propertyManager = new PropertyManager("parser.properties");
-        Parser parser = new Parser();
-        parser.configure(propertyManager);
-        Text text = parser.parseText(sb.toString());
+        EasyParser easyParser = new EasyParser();
+        easyParser.configure(propertyManager);
+        Text text = easyParser.parseText(sb.toString());
         logger.info(text.toSourceString());
 
-        TextLogic.findUniqueWord(text);
-        TextLogic.bringAllSentencesAscendingOrderWords(text);
-        TextLogic.swapWords(text);
+        //TextLogic.findUniqueWord(text);
+        //TextLogic.bringAllSentencesAscendingOrderWords(text);
+        //TextLogic.swapWords(text);
 
-//        Class<Text> textClass = Text.class;
-//        UniversalParser universalParser = new UniversalParser();
-//        universalParser.autoconfigure(propertyManager);
-//        universalParser.parseAllWhatYouWant(sb.toString(), textClass);
+        NonUniversalParser nonUniversalParser = new NonUniversalParser();
+        nonUniversalParser.autoconfigure(propertyManager);
+        nonUniversalParser.parse(sb.toString(), Text.class);
+
+
 
     }
 }
