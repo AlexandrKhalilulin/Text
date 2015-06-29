@@ -2,6 +2,7 @@ package ak;
 
 import ak.logic.NonUniversalParser;
 import ak.logic.StandartParser;
+import ak.logic.TextLogic;
 import ak.model.Text;
 import ak.util.Files;
 import ak.util.PropertyManager;
@@ -21,9 +22,10 @@ public class Runner {
         Text text = standartParser.parseText(Files.getText());
         logger.info(text.toSourceString());
 
+        //complete tasks
         //TextLogic.findUniqueWord(text);
-        //TextLogic.bringAllSentencesAscendingOrderWords(text);
-        //TextLogic.swapWords(text);
+        TextLogic.sortTextOrderWords(text);
+        TextLogic.swapWords(text);
 
         //2. works with Non-Universal parser
         NonUniversalParser nonUniversalParser = new NonUniversalParser();

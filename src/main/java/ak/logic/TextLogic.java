@@ -3,9 +3,10 @@ package ak.logic;
 import ak.model.*;
 import org.slf4j.Logger;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class TextLogic {
     static Logger logger = org.slf4j.LoggerFactory.getLogger(TextLogic.class);
@@ -13,11 +14,16 @@ public class TextLogic {
     //1.find the maximum number of sentences that have the same words.
 
     //2. Bring all offers of the specified text in ascending order of the number of words in each of them.
-    public static void bringAllSentencesAscendingOrderWords(Text text) {
-        Map<Sentence, Integer> map = new HashMap<Sentence, Integer>();
+    public static void sortTextOrderWords(Text text) {
+        TreeMap<Integer, Set<Sentence>> treeMap = new TreeMap<>();
+
         for (Sentence list : text.getSentences()) {
-            map.put(list, list.getWords().size());
+            Set set = new HashSet<>();
+            set.add(list);
+            treeMap.put(list.getWords().size(), set);
+            logger.info("treemap --- {}", treeMap);
         }
+
     }
 
     //3. Find such a word in the first sentence, which is not in any of the other proposals.
@@ -68,9 +74,9 @@ public class TextLogic {
                         sentence.getElements().add(i, firstWord);
                         break;
                     }
-                    sentence.getElements().remove(0);
-                    sentence.getElements().add(0, lastWord);
                 }
+                sentence.getElements().remove(0);
+                sentence.getElements().add(0, lastWord);
                 swapParagraph.add(sentence);
             }
             swapWordText.add(swapParagraph);
