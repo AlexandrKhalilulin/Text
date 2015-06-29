@@ -1,13 +1,30 @@
 package ak.model;
 
-public class Symbol implements Component, SentencePart {
-    private char symbol;
+import java.util.HashMap;
+import java.util.Map;
 
-    public Symbol(char symbol) {
-        this.symbol = symbol;
+public class Symbol implements Leaf, SentencePart {
+    private static Map<Character, Symbol> symbolMap = new HashMap<>();
+    private Character value;
+
+    public Symbol() {
     }
 
+    public Symbol(Character symbol) {
+        this.value = symbol;
+    }
+
+    public static Symbol of(Character ch) {
+        Symbol symbol = symbolMap.get(ch);
+        if (symbol == null) {
+            symbol = new Symbol(ch);
+            symbolMap.put(ch, symbol);
+            return symbol;
+        } else return symbol;
+    }
+
+    @Override
     public String toSourceString() {
-        return String.valueOf(symbol);
+        return value.toString();
     }
 }
