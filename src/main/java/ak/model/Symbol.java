@@ -20,7 +20,8 @@ public class Symbol implements Leaf, SentencePart {
             symbol = new Symbol(ch);
             symbolMap.put(ch, symbol);
             return symbol;
-        } else return symbol;
+        }
+        return symbol;
     }
 
     @Override
